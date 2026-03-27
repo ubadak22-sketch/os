@@ -1,0 +1,561 @@
+/* ============================================================
+   LunaOS — apps.css
+   Per-app styles
+   ============================================================ */
+
+/* ── Notes ───────────────────────────────────────────────── */
+.notes-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 100%;
+  overflow: hidden;
+}
+.notes-sidebar {
+  border-right: 1px solid var(--luna-border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(240,237,232,0.4);
+}
+.notes-sidebar-header {
+  padding: 10px;
+  border-bottom: 1px solid var(--luna-border);
+  display: flex;
+  gap: 6px;
+}
+.notes-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px;
+}
+.note-item {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast);
+  margin-bottom: 2px;
+}
+.note-item:hover { background: var(--luna-surface-2); }
+.note-item.active { background: var(--luna-accent-bg); border: 1px solid rgba(194,123,62,0.2); }
+.note-item-title { font-size: 13px; font-weight: 500; color: var(--luna-text); }
+.note-item-preview { font-size: 11px; color: var(--luna-text-3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.note-item-date { font-size: 10px; color: var(--luna-text-3); margin-top: 3px; font-family: var(--font-mono); }
+
+.notes-editor { display: flex; flex-direction: column; overflow: hidden; }
+.notes-editor-toolbar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--luna-border); }
+.notes-title-input {
+  width: 100%; border: none; background: none; outline: none;
+  font-size: 20px; font-weight: 600; font-family: var(--font-serif);
+  color: var(--luna-text); padding: 14px 16px 6px;
+}
+.notes-body-input {
+  flex: 1; border: none; background: none; outline: none; resize: none;
+  font-size: 14px; line-height: 1.75; color: var(--luna-text);
+  padding: 10px 16px 16px; font-family: var(--font-sans);
+}
+
+/* ── Clock ───────────────────────────────────────────────── */
+.clock-app {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; gap: 12px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(194,123,62,0.08), transparent 60%);
+}
+.clock-time {
+  font-family: var(--font-mono);
+  font-size: 64px; font-weight: 300;
+  color: var(--luna-text); letter-spacing: -2px;
+  line-height: 1;
+}
+.clock-date {
+  font-family: var(--font-serif);
+  font-size: 18px; color: var(--luna-text-2); font-weight: 300;
+}
+.clock-tz { font-size: 11px; color: var(--luna-text-3); font-family: var(--font-mono); }
+
+.clock-analog {
+  width: 160px; height: 160px;
+  position: relative; margin-bottom: 8px;
+}
+.clock-face {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--luna-border-2);
+  background: var(--luna-surface);
+  box-shadow: var(--luna-shadow);
+  position: relative;
+}
+.clock-hand {
+  position: absolute;
+  bottom: 50%; left: 50%;
+  transform-origin: bottom center;
+  border-radius: 99px;
+}
+.hand-hour   { width: 3px; height: 45px; background: var(--luna-text); margin-left: -1.5px; }
+.hand-minute { width: 2px; height: 60px; background: var(--luna-text-2); margin-left: -1px; }
+.hand-second { width: 1px; height: 68px; background: var(--luna-accent); margin-left: -0.5px; }
+.clock-center {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 8px; height: 8px;
+  background: var(--luna-accent);
+  border-radius: 50%;
+  z-index: 10;
+}
+
+/* ── Calendar ────────────────────────────────────────────── */
+.calendar-app { display: flex; flex-direction: column; height: 100%; }
+.calendar-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--luna-border);
+}
+.calendar-title { font-family: var(--font-serif); font-size: 20px; font-weight: 400; }
+.calendar-grid { flex: 1; overflow: hidden; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+.calendar-weekdays { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 4px; }
+.calendar-weekday { text-align: center; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--luna-text-3); padding: 4px; }
+.calendar-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; flex: 1; }
+.cal-day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 13px; cursor: pointer;
+  transition: background var(--dur-fast);
+  position: relative;
+}
+.cal-day:hover { background: var(--luna-surface-2); }
+.cal-day.other-month { color: var(--luna-text-3); }
+.cal-day.today {
+  background: var(--luna-accent);
+  color: #fff;
+  font-weight: 600;
+}
+.cal-day.selected { background: var(--luna-accent-bg); color: var(--luna-accent); font-weight: 600; border: 1px solid rgba(194,123,62,0.3); }
+.cal-day.has-event::after {
+  content: '';
+  position: absolute; bottom: 3px;
+  width: 4px; height: 4px;
+  background: var(--luna-accent);
+  border-radius: 50%;
+}
+.calendar-events {
+  border-top: 1px solid var(--luna-border);
+  padding: 12px 16px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.cal-event-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 0; border-bottom: 1px solid var(--luna-border);
+  font-size: 13px;
+}
+.cal-event-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--luna-accent); flex-shrink: 0; }
+
+/* ── Editor ──────────────────────────────────────────────── */
+.editor-app { display: flex; flex-direction: column; height: 100%; }
+.editor-layout { display: grid; grid-template-columns: 1fr 1fr; flex: 1; overflow: hidden; }
+.editor-pane { display: flex; flex-direction: column; overflow: hidden; }
+.editor-pane + .editor-pane { border-left: 1px solid var(--luna-border); }
+.editor-pane-label {
+  padding: 6px 12px; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--luna-text-3);
+  border-bottom: 1px solid var(--luna-border); background: rgba(240,237,232,0.4);
+}
+.editor-textarea {
+  flex: 1; resize: none; border: none; outline: none; padding: 14px;
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.7;
+  background: transparent; color: var(--luna-text); overflow-y: auto;
+}
+.editor-preview {
+  flex: 1; overflow: auto; padding: 14px;
+  font-size: 14px; line-height: 1.7; color: var(--luna-text);
+}
+.editor-preview h1,h2,h3 { font-family: var(--font-serif); margin-bottom: 8px; }
+
+/* ── Terminal ────────────────────────────────────────────── */
+.terminal-app {
+  height: 100%; display: flex; flex-direction: column;
+  background: #1a1714; color: #e8e3db; font-family: var(--font-mono); font-size: 13px;
+}
+.terminal-output {
+  flex: 1; overflow-y: auto; padding: 14px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.terminal-line { line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+.terminal-line.cmd { color: var(--luna-accent-2); }
+.terminal-line.err { color: #ff7070; }
+.terminal-line.info { color: #7abaff; }
+.terminal-line.success { color: #7dd87a; }
+.terminal-input-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-top: 1px solid #2a2520;
+}
+.terminal-prompt { color: var(--luna-accent-2); white-space: nowrap; }
+.terminal-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: #e8e3db; font-family: var(--font-mono); font-size: 13px;
+  caret-color: var(--luna-accent-2);
+}
+
+/* ── File Manager ────────────────────────────────────────── */
+.files-app { display: grid; grid-template-columns: 180px 1fr; height: 100%; overflow: hidden; }
+.files-sidebar {
+  border-right: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.4);
+  padding: 10px 6px;
+  overflow-y: auto;
+}
+.files-nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 10px; border-radius: var(--radius-sm);
+  font-size: 13px; cursor: pointer;
+  transition: background var(--dur-fast); color: var(--luna-text-2);
+}
+.files-nav-item:hover { background: var(--luna-surface-2); color: var(--luna-text); }
+.files-nav-item.active { background: var(--luna-accent-bg); color: var(--luna-accent); }
+.files-main { display: flex; flex-direction: column; overflow: hidden; }
+.files-grid {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px;
+  align-content: start;
+}
+.file-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 10px 8px; border-radius: var(--radius);
+  cursor: pointer; text-align: center;
+  transition: background var(--dur-fast);
+}
+.file-item:hover { background: var(--luna-surface-2); }
+.file-item.selected { background: var(--luna-accent-bg); }
+.file-icon { font-size: 30px; }
+.file-name { font-size: 11px; color: var(--luna-text-2); line-height: 1.3; word-break: break-all; }
+.files-statusbar {
+  padding: 6px 16px; border-top: 1px solid var(--luna-border);
+  font-size: 11px; color: var(--luna-text-3); font-family: var(--font-mono);
+}
+
+/* ── Settings ────────────────────────────────────────────── */
+.settings-app { display: grid; grid-template-columns: 180px 1fr; height: 100%; overflow: hidden; }
+.settings-sidebar {
+  border-right: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.4);
+  padding: 10px 6px; overflow-y: auto;
+}
+.settings-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--radius-sm);
+  font-size: 13px; cursor: pointer; transition: background var(--dur-fast);
+}
+.settings-nav-item:hover { background: var(--luna-surface-2); }
+.settings-nav-item.active { background: var(--luna-accent-bg); color: var(--luna-accent); font-weight: 500; }
+.settings-main { overflow-y: auto; padding: 20px 24px; }
+.settings-section-title {
+  font-family: var(--font-serif); font-size: 22px; font-weight: 400;
+  margin-bottom: 20px; color: var(--luna-text);
+}
+.settings-group { margin-bottom: 24px; }
+.settings-group-title {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--luna-text-3); margin-bottom: 10px;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid var(--luna-border);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-row-label { font-size: 13px; color: var(--luna-text); }
+.settings-row-desc { font-size: 11px; color: var(--luna-text-3); margin-top: 2px; }
+
+/* Toggle */
+.toggle {
+  position: relative; width: 40px; height: 22px;
+  background: var(--luna-surface-2); border-radius: 99px;
+  cursor: pointer; border: 1px solid var(--luna-border-2);
+  transition: background var(--dur);
+}
+.toggle.on { background: var(--luna-accent); border-color: transparent; }
+.toggle::after {
+  content: ''; position: absolute;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; top: 2px; left: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  transition: transform var(--dur) var(--ease-spring);
+}
+.toggle.on::after { transform: translateX(18px); }
+
+/* ── Weather ─────────────────────────────────────────────── */
+.weather-app { height: 100%; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.weather-hero {
+  text-align: center; padding: 20px;
+  background: linear-gradient(135deg, rgba(194,123,62,0.08), rgba(58,110,165,0.06));
+  border-radius: var(--radius-lg); border: 1px solid var(--luna-border);
+}
+.weather-icon-big { font-size: 64px; line-height: 1; margin-bottom: 8px; }
+.weather-temp-big { font-size: 52px; font-weight: 300; font-family: var(--font-mono); color: var(--luna-text); line-height: 1; }
+.weather-desc { font-size: 14px; color: var(--luna-text-2); margin-top: 6px; font-family: var(--font-serif); }
+.weather-loc { font-size: 12px; color: var(--luna-text-3); margin-top: 4px; }
+.weather-stats {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+}
+.weather-stat {
+  background: var(--luna-surface-2); border-radius: var(--radius);
+  border: 1px solid var(--luna-border); padding: 12px; text-align: center;
+}
+.weather-stat-value { font-size: 18px; font-weight: 500; color: var(--luna-text); font-family: var(--font-mono); }
+.weather-stat-label { font-size: 10px; color: var(--luna-text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+.weather-forecast {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+}
+.weather-fc-day {
+  flex-shrink: 0; text-align: center; padding: 12px 16px;
+  background: var(--luna-surface-2); border-radius: var(--radius);
+  border: 1px solid var(--luna-border); min-width: 80px;
+}
+.weather-fc-day-name { font-size: 11px; font-weight: 600; color: var(--luna-text-2); text-transform: uppercase; }
+.weather-fc-icon { font-size: 22px; margin: 6px 0; }
+.weather-fc-temps { font-size: 12px; color: var(--luna-text); font-family: var(--font-mono); }
+
+/* ── Music ───────────────────────────────────────────────── */
+.music-app { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.music-search-bar { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--luna-border); }
+.music-player { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.music-embed-wrap { flex: 1; position: relative; background: #000; }
+.music-embed-wrap iframe { width: 100%; height: 100%; border: none; }
+.music-playlist { border-top: 1px solid var(--luna-border); max-height: 160px; overflow-y: auto; }
+.music-track {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; cursor: pointer;
+  transition: background var(--dur-fast); font-size: 13px;
+  border-bottom: 1px solid var(--luna-border);
+}
+.music-track:hover { background: var(--luna-surface-2); }
+.music-track.playing { color: var(--luna-accent); font-weight: 500; }
+.music-track-icon { font-size: 16px; }
+.music-error { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 24px; text-align: center; color: var(--luna-text-3); gap: 8px; }
+
+/* ── Browser ─────────────────────────────────────────────── */
+.browser-app { display: flex; flex-direction: column; height: 100%; }
+.browser-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--luna-border); }
+.browser-url { flex: 1; padding: 6px 12px; border-radius: 99px; background: var(--luna-surface-2); border: 1px solid var(--luna-border); font-size: 12px; font-family: var(--font-mono); color: var(--luna-text-2); }
+.browser-frame { flex: 1; border: none; width: 100%; }
+.browser-bookmarks { display: flex; gap: 6px; padding: 6px 12px; border-bottom: 1px solid var(--luna-border); overflow-x: auto; }
+.browser-bookmark {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 99px;
+  background: var(--luna-surface-2); border: 1px solid var(--luna-border);
+  font-size: 11px; cursor: pointer; white-space: nowrap;
+  transition: background var(--dur-fast);
+}
+.browser-bookmark:hover { background: var(--luna-accent-bg); color: var(--luna-accent); }
+
+/* ── Chess ───────────────────────────────────────────────── */
+.chess-app { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow: hidden; padding: 12px 16px; gap: 8px; }
+.chess-status { font-size: 13px; font-weight: 500; color: var(--luna-text-2); flex-shrink: 0; }
+#chess-board {
+  display: grid; grid-template-columns: repeat(8,1fr);
+  border: 2px solid var(--luna-border-2);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--luna-shadow);
+  flex-shrink: 0;
+  /* Board fills available space up to a max */
+  width: min(100%, calc(100vh - 200px), 420px);
+  aspect-ratio: 1;
+}
+.chess-square {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(18px, 4vw, 30px); cursor: pointer;
+  transition: background var(--dur-fast);
+  user-select: none;
+}
+.chess-square.light { background: #f0e8d8; }
+.chess-square.dark  { background: #b07d4a; }
+.chess-square.selected { background: rgba(194,123,62,0.5) !important; }
+.chess-square.legal { position: relative; }
+.chess-square.legal::after {
+  content: ''; position: absolute;
+  width: 28%; height: 28%; border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+}
+.chess-square.last-move { background: rgba(194,123,62,0.3) !important; }
+.chess-controls { display: flex; gap: 8px; }
+
+/* ── Breakout ────────────────────────────────────────────── */
+.breakout-app {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; gap: 10px; background: #0d0d14;
+  color: #e8e3db;
+}
+#breakout-canvas {
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  cursor: none;
+  max-width: 100%;
+}
+.breakout-hud { display: flex; gap: 24px; font-family: var(--font-mono); font-size: 13px; color: rgba(232,227,219,0.7); }
+.breakout-hud span { display: flex; align-items: center; gap: 6px; }
+.breakout-msg {
+  position: absolute; font-family: var(--font-serif);
+  font-size: 18px; font-weight: 300; color: #e8e3db;
+  text-align: center; pointer-events: none;
+}
+
+/* ── Task Manager ────────────────────────────────────────── */
+.taskman-app { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.taskman-hero {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+  padding: 16px; border-bottom: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.4);
+}
+.taskman-stat-card {
+  background: var(--luna-surface); border: 1px solid var(--luna-border);
+  border-radius: var(--radius); padding: 12px; text-align: center;
+  box-shadow: var(--luna-shadow-sm);
+}
+.taskman-stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--luna-text-3); }
+.taskman-stat-value { font-size: 28px; font-weight: 300; font-family: var(--font-mono); color: var(--luna-text); line-height: 1; margin: 6px 0 4px; }
+.taskman-stat-bar { height: 4px; background: var(--luna-surface-2); border-radius: 99px; overflow: hidden; }
+.taskman-stat-bar-fill { height: 100%; border-radius: 99px; transition: width 0.8s var(--ease); }
+.taskman-stat-bar-fill.cpu { background: var(--luna-accent); }
+.taskman-stat-bar-fill.ram { background: var(--luna-blue); }
+.taskman-stat-bar-fill.gpu { background: var(--luna-green); }
+
+.taskman-ram-detail {
+  display: flex; gap: 8px; padding: 10px 16px;
+  border-bottom: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.25);
+}
+.taskman-ram-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 11px; font-family: var(--font-mono);
+  border: 1px solid var(--luna-border);
+  background: var(--luna-surface);
+}
+.taskman-ram-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.taskman-procs { flex: 1; overflow-y: auto; }
+.taskman-proc-header {
+  display: grid; grid-template-columns: 1fr 100px 80px 80px;
+  padding: 8px 16px; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .08em; color: var(--luna-text-3);
+  border-bottom: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.4);
+  position: sticky; top: 0;
+}
+.taskman-proc-row {
+  display: grid; grid-template-columns: 1fr 100px 80px 80px;
+  padding: 9px 16px; font-size: 13px;
+  border-bottom: 1px solid var(--luna-border);
+  align-items: center;
+  transition: background var(--dur-fast);
+}
+.taskman-proc-row:hover { background: var(--luna-surface-2); }
+.taskman-proc-name { display: flex; align-items: center; gap: 8px; }
+.taskman-proc-icon { font-size: 16px; }
+.taskman-kill-btn {
+  padding: 3px 8px; border-radius: var(--radius-sm);
+  font-size: 11px; color: var(--luna-red);
+  border: 1px solid rgba(184,64,64,.2);
+  background: #fdeaea; cursor: pointer;
+  transition: background var(--dur-fast);
+}
+.taskman-kill-btn:hover { background: #fad5d5; }
+.taskman-empty { padding: 32px; text-align: center; color: var(--luna-text-3); font-size: 13px; }
+
+/* ── Play Store ──────────────────────────────────────────── */
+.playstore-app { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.playstore-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--luna-border);
+  background: rgba(240,237,232,0.4);
+}
+.playstore-title {
+  font-family: var(--font-serif); font-size: 22px; font-weight: 400;
+  color: var(--luna-text); margin-bottom: 4px;
+}
+.playstore-sub { font-size: 12px; color: var(--luna-text-3); }
+.playstore-grid {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px; align-content: start;
+}
+.ps-card {
+  background: var(--luna-surface); border: 1px solid var(--luna-border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--luna-shadow-sm);
+  transition: box-shadow var(--dur), transform var(--dur) var(--ease-spring);
+}
+.ps-card:hover { box-shadow: var(--luna-shadow); transform: translateY(-2px); }
+.ps-card-banner {
+  height: 80px; display: flex; align-items: center; justify-content: center; font-size: 40px;
+}
+.ps-card-body { padding: 12px 14px; }
+.ps-card-name { font-size: 14px; font-weight: 600; color: var(--luna-text); }
+.ps-card-desc { font-size: 11px; color: var(--luna-text-2); margin-top: 4px; line-height: 1.5; }
+.ps-card-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 12px;
+}
+.ps-card-size { font-size: 10px; color: var(--luna-text-3); font-family: var(--font-mono); }
+.ps-install-btn {
+  padding: 5px 14px; border-radius: 99px;
+  font-size: 12px; font-weight: 500;
+  background: var(--luna-accent); color: #fff; cursor: pointer;
+  border: none; transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.ps-install-btn:hover { background: #b06e32; }
+.ps-install-btn:active { transform: scale(0.95); }
+.ps-install-btn.installed {
+  background: var(--luna-surface-2); color: var(--luna-text-2);
+  border: 1px solid var(--luna-border); cursor: default;
+}
+.ps-install-btn.installing {
+  background: var(--luna-accent-bg); color: var(--luna-accent);
+  cursor: wait;
+}
+.ps-rating { font-size: 11px; color: #f0a040; }
+
+/* ============================================================
+   LunaOS v2 — App layout patches
+   ============================================================ */
+
+/* Ensure all app root containers fill window body */
+.tm-app,
+.ps-app,
+.notes-layout,
+.clock-app,
+.calendar-app,
+.editor-app,
+.terminal-app,
+.files-app,
+.settings-app,
+.weather-app,
+.music-app,
+.browser-app,
+.chess-app,
+.breakout-app {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Fix breakout dark bg filling body */
+.breakout-app {
+  background: #0d0d14;
+  position: relative;
+}
+
+/* Chat app message area scrollbar */
+#chat-msgs::-webkit-scrollbar { width: 4px; }
+
+/* Fix notes layout height */
+.notes-layout { height: 100%; }
+.notes-editor { height: 100%; }
+
+/* Fix calendar overflow */
+.calendar-app { overflow: hidden; }
+
+/* Fix editor flex */
+.editor-app { display: flex; flex-direction: column; height: 100%; }
+.editor-layout { flex: 1; min-height: 0; }

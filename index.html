@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,300;9..144,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/apps.css" />
+</head>
+<body>
+
+  <div id="boot-screen">
+    <div class="boot-logo">
+      <div class="boot-icon">&#11041;</div>
+      <div class="boot-name">Nova OS</div>
+      <div class="boot-bar-wrap"><div class="boot-bar"></div></div>
+      <div class="boot-status">Initializing kernel...</div>
+    </div>
+  </div>
+
+  <div id="desktop" class="hidden">
+    <div id="wallpaper"></div>
+
+    <div id="topbar">
+      <div id="topbar-left">
+        <span id="tb-logo">&#11041; Nova OS</span>
+        <span id="tb-menu-apps" class="tb-btn" title="All Apps">&#8862;</span>
+      </div>
+      <div id="topbar-center"><span id="tb-clock"></span></div>
+      <div id="topbar-right">
+        <span id="tb-ram-indicator" title="RAM usage"></span>
+        <span id="tb-battery">&#128267;</span>
+        <span id="tb-wifi">&#128246;</span>
+        <span id="tb-date"></span>
+      </div>
+    </div>
+
+    <div id="desktop-icons">
+      <div class="desktop-icon" data-app="notes">     <div class="di-icon">&#128221;</div><div class="di-label">Notes</div></div>
+      <div class="desktop-icon" data-app="terminal">  <div class="di-icon">&#9000;</div>  <div class="di-label">Terminal</div></div>
+      <div class="desktop-icon" data-app="files">     <div class="di-icon">&#128193;</div><div class="di-label">Files</div></div>
+      <div class="desktop-icon" data-app="editor">    <div class="di-icon">&#128187;</div><div class="di-label">Editor</div></div>
+      <div class="desktop-icon" data-app="chess">     <div class="di-icon">&#9823;</div>  <div class="di-label">Chess</div></div>
+      <div class="desktop-icon" data-app="breakout">  <div class="di-icon">&#127918;</div><div class="di-label">Breakout</div></div>
+      <div class="desktop-icon" data-app="novablender">     <div class="di-icon">&#11041;</div><div class="di-label">Blender</div></div>
+      <div class="desktop-icon" data-app="taskManager"><div class="di-icon">&#128202;</div><div class="di-label">Task Mgr</div></div>
+      <div class="desktop-icon" data-app="playStore"> <div class="di-icon">&#127978;</div><div class="di-label">App Store</div></div>
+    </div>
+
+    <div id="desktop-widgets">
+      <div class="desktop-widget widget-clock">
+        <div class="dw-time" id="dw-time">00:00</div>
+        <div class="dw-date" id="dw-date">Loading...</div>
+        <div class="dw-tz"   id="dw-tz"></div>
+      </div>
+      <div class="desktop-widget widget-weather">
+        <div id="dw-wx-inner" style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:28px">&#127780;</div>
+          <div style="font-size:11px;color:var(--luna-text-3)">Fetching weather...</div>
+        </div>
+      </div>
+      <div class="desktop-widget widget-system">
+        <div class="dw-sys-row">
+          <span class="dw-sys-label">CPU</span>
+          <div class="dw-bar-track"><div class="dw-bar-fill"     id="dw-cpu-bar"></div></div>
+          <span class="dw-sys-val" id="dw-cpu-val">0%</span>
+        </div>
+        <div class="dw-sys-row">
+          <span class="dw-sys-label">RAM</span>
+          <div class="dw-bar-track"><div class="dw-bar-fill ram" id="dw-ram-bar"></div></div>
+          <span class="dw-sys-val" id="dw-ram-val">0%</span>
+        </div>
+        <div class="dw-sys-row">
+          <span class="dw-sys-label">GPU</span>
+          <div class="dw-bar-track"><div class="dw-bar-fill gpu" id="dw-gpu-bar"></div></div>
+          <span class="dw-sys-val" id="dw-gpu-val">0%</span>
+        </div>
+        <div class="dw-sys-row" style="margin-top:4px">
+          <span class="dw-sys-label">STO</span>
+          <div class="dw-bar-track"><div class="dw-bar-fill" style="background:var(--luna-accent)" id="dw-sto-bar"></div></div>
+          <span class="dw-sys-val" id="dw-sto-val">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="window-layer"></div>
+
+    <div id="dock">
+      <div id="dock-inner">
+        <div class="dock-app" data-app="notes"       title="Notes">        <div class="dock-icon">&#128221;</div><span>Notes</span></div>
+        <div class="dock-app" data-app="clock"       title="Clock">        <div class="dock-icon">&#128336;</div><span>Clock</span></div>
+        <div class="dock-app" data-app="calendar"    title="Calendar">     <div class="dock-icon">&#128197;</div><span>Calendar</span></div>
+        <div class="dock-app" data-app="editor"      title="Editor">       <div class="dock-icon">&#128187;</div><span>Editor</span></div>
+        <div class="dock-app" data-app="terminal"    title="Terminal">     <div class="dock-icon">&#9000;</div><span>Terminal</span></div>
+        <div class="dock-app" data-app="files"       title="Files">        <div class="dock-icon">&#128193;</div><span>Files</span></div>
+        <div class="dock-app" data-app="weather"     title="Weather">      <div class="dock-icon">&#127780;</div><span>Weather</span></div>
+        <div class="dock-app" data-app="music"       title="Music">        <div class="dock-icon">&#127925;</div><span>Music</span></div>
+        <div class="dock-app" data-app="browser"     title="Browser">      <div class="dock-icon">&#127758;</div><span>Browser</span></div>
+        <div class="dock-sep"></div>
+        <div class="dock-app" data-app="chess"       title="Chess">        <div class="dock-icon">&#9823;</div><span>Chess</span></div>
+        <div class="dock-app" data-app="breakout"    title="Breakout">     <div class="dock-icon">&#127918;</div><span>Breakout</span></div>
+        <div class="dock-sep"></div>
+        <div class="dock-app" data-app="novablender" title="NovaBlender">  <div class="dock-icon">&#11041;</div><span>Blender</span></div>
+        <div class="dock-sep"></div>
+        <div class="dock-app" data-app="taskManager" title="Task Manager"> <div class="dock-icon">&#128202;</div><span>Tasks</span></div>
+        <div class="dock-app" data-app="playStore"   title="App Store">    <div class="dock-icon">&#127978;</div><span>Store</span></div>
+        <div class="dock-app" data-app="settings"    title="Settings">     <div class="dock-icon">&#9881;</div><span>Settings</span></div>
+      </div>
+    </div>
+  </div>
+
+  <template id="window-template">
+    <div class="os-window" tabindex="0">
+      <div class="window-titlebar">
+        <div class="window-controls">
+          <button class="wc-btn wc-close" title="Close"></button>
+          <button class="wc-btn wc-min"   title="Minimize"></button>
+          <button class="wc-btn wc-max"   title="Maximize"></button>
+        </div>
+        <div class="window-title"></div>
+        <div class="window-spacer"></div>
+      </div>
+      <div class="window-body"></div>
+      <div class="window-resize-handle"></div>
+    </div>
+  </template>
+
+  <script src="js/core/eventBus.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/processManager.js"></script>
+  <script src="js/core/windowManager.js"></script>
+  <script src="js/core/appLoader.js"></script>
+  <script src="js/core/kernel.js"></script>
+  <script src="js/core/boot.js"></script>
+  <script src="js/services/weatherService.js"></script>
+  <script src="js/services/youtubeService.js"></script>
+  <script src="js/apps/notes/notes.js"></script>
+  <script src="js/apps/clock/clock.js"></script>
+  <script src="js/apps/calendar/calendar.js"></script>
+  <script src="js/apps/editor/editor.js"></script>
+  <script src="js/apps/terminal/terminal.js"></script>
+  <script src="js/apps/files/files.js"></script>
+  <script src="js/apps/settings/settings.js"></script>
+  <script src="js/apps/weather/weather.js"></script>
+  <script src="js/apps/chess/chess.js"></script>
+  <script src="js/apps/breakout/breakout.js"></script>
+  <script src="js/apps/music/music.js"></script>
+  <script src="js/apps/browser/browser.js"></script>
+  <script src="js/apps/novablender/novablender.js"></script>
+  <script src="js/apps/taskManager/taskManager.js"></script>
+  <script src="js/apps/playStore/playStore.js"></script>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => { NovaOS.Boot.start(); });
+  </script>
+</body>
+</html>

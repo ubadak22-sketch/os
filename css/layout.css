@@ -1,0 +1,570 @@
+/* ============================================================
+   LunaOS — layout.css
+   Boot screen, desktop chrome, dock, topbar
+   ============================================================ */
+
+/* ── Boot Screen ─────────────────────────────────────────── */
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #f0ede8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+#boot-screen.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.boot-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.boot-icon {
+  font-size: 56px;
+  line-height: 1;
+  color: var(--luna-accent);
+  animation: boot-pulse 1.8s ease-in-out infinite;
+}
+@keyframes boot-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.95); }
+}
+.boot-name {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--luna-text);
+}
+.boot-bar-wrap {
+  width: 180px;
+  height: 3px;
+  background: var(--luna-surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.boot-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--luna-accent), var(--luna-accent-2));
+  border-radius: 99px;
+  transition: width 0.3s var(--ease);
+}
+.boot-status {
+  font-size: 11px;
+  color: var(--luna-text-3);
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+}
+
+/* ── Desktop ─────────────────────────────────────────────── */
+#desktop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 36px 1fr 80px;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+}
+
+#wallpaper {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(194,123,62,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(58,110,165,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 100% 100% at 50% 50%, rgba(240,237,232,1) 0%, #e8e3db 100%);
+  z-index: 0;
+}
+
+#window-layer {
+  position: absolute;
+  top: 36px;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+#window-layer > * { pointer-events: all; }
+
+/* ── Top Bar ─────────────────────────────────────────────── */
+#topbar {
+  position: relative;
+  z-index: 100;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: rgba(240,237,232,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--luna-border);
+  height: 36px;
+  user-select: none;
+}
+#topbar-left, #topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--luna-text-2);
+}
+#tb-logo {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--luna-text);
+  letter-spacing: 0.02em;
+}
+#topbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#tb-clock {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--luna-text);
+}
+#tb-date { font-size: 11px; }
+
+/* ── Dock ────────────────────────────────────────────────── */
+#dock {
+  position: relative;
+  z-index: 100;
+  grid-row: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+}
+#dock-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 8px 14px;
+  background: rgba(250,248,245,0.82);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--luna-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--luna-shadow), 0 0 0 0.5px rgba(255,255,255,0.6) inset;
+}
+.dock-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease-spring);
+  position: relative;
+}
+.dock-app:hover {
+  transform: translateY(-10px) scale(1.18);
+}
+.dock-app:hover span {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dock-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  border-radius: var(--radius);
+  background: var(--luna-surface);
+  border: 1px solid var(--luna-border);
+  box-shadow: var(--luna-shadow-sm);
+  transition: box-shadow var(--dur) var(--ease);
+}
+.dock-app:hover .dock-icon {
+  box-shadow: var(--luna-shadow);
+}
+.dock-app span {
+  font-size: 10px;
+  color: var(--luna-text-2);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  white-space: nowrap;
+  position: absolute;
+  top: -22px;
+  background: rgba(26,23,20,0.82);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 10px;
+  pointer-events: none;
+}
+.dock-app.running::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--luna-accent);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.dock-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--luna-border-2);
+  margin: 0 4px;
+  align-self: center;
+}
+
+/* ── Topbar button ───────────────────────────────────────── */
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background var(--dur-fast);
+  color: var(--luna-text-2);
+}
+.tb-btn:hover { background: rgba(0,0,0,0.07); color: var(--luna-text); }
+
+/* ── Desktop Icons ───────────────────────────────────────── */
+#desktop-icons {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 80px);
+  gap: 8px;
+  pointer-events: all;
+}
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 6px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--dur-fast), transform var(--dur) var(--ease-spring);
+  user-select: none;
+}
+.desktop-icon:hover {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(12px);
+  transform: scale(1.06);
+}
+.desktop-icon:active, .desktop-icon.di-tap {
+  animation: di-tap 0.18s var(--ease-spring);
+}
+@keyframes di-tap {
+  0%  { transform: scale(1); }
+  40% { transform: scale(0.88); }
+  100%{ transform: scale(1); }
+}
+.di-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  background: rgba(250,248,245,0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+}
+.di-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--luna-text);
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(255,255,255,0.7);
+  letter-spacing: 0.01em;
+}
+
+/* ── Desktop Widgets ─────────────────────────────────────── */
+#desktop-widgets {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+  width: 200px;
+}
+.desktop-widget {
+  background: rgba(250,248,245,0.68);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09), 0 0 0 0.5px rgba(255,255,255,0.4) inset;
+}
+
+/* Clock widget */
+.widget-clock { text-align: center; }
+.dw-time {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--luna-text);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.dw-date {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  color: var(--luna-text-2);
+  margin-top: 4px;
+  font-weight: 300;
+}
+.dw-tz {
+  font-size: 10px;
+  color: var(--luna-text-3);
+  font-family: var(--font-mono);
+  margin-top: 3px;
+}
+
+/* System widget */
+.widget-system { display: flex; flex-direction: column; gap: 8px; }
+.dw-sys-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.dw-sys-label {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--luna-text-3); width: 28px; flex-shrink: 0;
+}
+.dw-bar-track {
+  flex: 1; height: 5px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 99px; overflow: hidden;
+}
+.dw-bar-fill {
+  height: 100%; width: 0%;
+  background: var(--luna-accent);
+  border-radius: 99px;
+  transition: width 1s var(--ease);
+}
+.dw-bar-fill.ram { background: var(--luna-blue); }
+.dw-bar-fill.gpu { background: var(--luna-green); }
+.dw-sys-val {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--luna-text-2); width: 28px;
+  text-align: right; flex-shrink: 0;
+}
+
+/* Mobile dock adjustments */
+@media (max-width: 600px) {
+  #dock-inner { gap: 2px; padding: 6px 8px; }
+  .dock-icon { width: 36px; height: 36px; font-size: 20px; border-radius: 8px; }
+  .dock-app:hover { transform: translateY(-6px) scale(1.1); }
+  #desktop-icons { grid-template-columns: repeat(2, 72px); left: 10px; gap: 4px; }
+  #desktop-widgets { display: none; }
+}
+
+/* ============================================================
+   LunaOS v2 additions — Desktop icons, widgets, topbar upgrades
+   ============================================================ */
+
+/* ── Topbar extras ───────────────────────────────────────── */
+.tb-btn {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--luna-text-2);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+.tb-btn:hover { background: var(--luna-surface-2); color: var(--luna-text); }
+
+#tb-ram-indicator {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--luna-text-3);
+  padding: 2px 6px;
+  background: var(--luna-surface-2);
+  border-radius: 99px;
+  border: 1px solid var(--luna-border);
+}
+
+/* ── Desktop Icons ───────────────────────────────────────── */
+#desktop-icons {
+  position: absolute;
+  top: 52px;
+  left: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: all;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 8px 8px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  width: 72px;
+  text-align: center;
+  transition: background var(--dur-fast), transform var(--dur) var(--ease-spring);
+  position: relative;
+}
+.desktop-icon:hover {
+  background: rgba(255,255,255,0.55);
+  transform: scale(1.06);
+}
+.desktop-icon:active { transform: scale(0.94); }
+.desktop-icon.di-tap { animation: di-bounce 0.3s var(--ease-spring); }
+@keyframes di-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.88); }
+  70%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.di-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border-radius: 12px;
+  background: rgba(250,248,245,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10), 0 0 0 0.5px rgba(255,255,255,0.4) inset;
+  transition: box-shadow var(--dur);
+}
+.desktop-icon:hover .di-icon {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.14), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+}
+
+.di-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--luna-text);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 72px;
+}
+
+/* ── Desktop Widgets ─────────────────────────────────────── */
+#desktop-widgets {
+  position: absolute;
+  top: 52px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: none;
+  width: 200px;
+}
+
+.desktop-widget {
+  background: rgba(250,248,245,0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(255,255,255,0.5) inset;
+  pointer-events: none;
+}
+
+/* Clock widget */
+.widget-clock {}
+.dw-time {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--luna-text);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.dw-date {
+  font-size: 11px;
+  color: var(--luna-text-2);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.dw-tz {
+  font-size: 10px;
+  color: var(--luna-text-3);
+  margin-top: 3px;
+  font-family: var(--font-mono);
+}
+
+/* System widget */
+.dw-sys-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.dw-sys-row:last-child { margin-bottom: 0; }
+.dw-sys-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--luna-text-3);
+  width: 28px;
+  flex-shrink: 0;
+}
+.dw-bar-track {
+  flex: 1;
+  height: 5px;
+  background: var(--luna-surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--luna-border);
+}
+.dw-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--luna-accent), var(--luna-accent-2));
+  border-radius: 99px;
+  transition: width 1s var(--ease);
+}
+.dw-bar-fill.ram { background: linear-gradient(90deg, var(--luna-blue), #5a9fd4); }
+.dw-bar-fill.gpu { background: linear-gradient(90deg, var(--luna-green), #7dc87a); }
+.dw-sys-val {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--luna-text-2);
+  width: 28px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Mobile hide widgets/icons */
+@media (max-width: 700px) {
+  #desktop-widgets { display: none; }
+  #desktop-icons   { flex-direction: row; flex-wrap: wrap; top: 48px; gap: 6px; width: calc(100% - 40px); }
+  .desktop-icon    { width: 60px; }
+  .di-icon         { width: 40px; height: 40px; font-size: 22px; }
+}
