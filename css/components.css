@@ -1,0 +1,240 @@
+/* ============================================================
+   Nova OS — components.css  v5
+   Windows, controls — premium dark glass + snapping indicators.
+   ============================================================ */
+
+/* ── OS Window ────────────────────────────────────────────── */
+.os-window {
+  position: absolute;
+  display: flex; flex-direction: column;
+  min-width: 300px; min-height: 220px;
+  background: rgba(18, 18, 46, 0.76);
+  backdrop-filter: blur(32px) saturate(1.5);
+  -webkit-backdrop-filter: blur(32px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.07) inset,
+    0 8px 32px rgba(0,0,0,0.45),
+    0 24px 64px rgba(0,0,0,0.30);
+  overflow: hidden; outline: none;
+  will-change: transform;
+  transition: box-shadow 200ms ease, border-color 200ms ease;
+}
+.os-window.focused {
+  border-color: rgba(255,255,255,0.20);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12) inset,
+    0 0 0 1px rgba(99,102,241,0.18),
+    0 12px 40px rgba(0,0,0,0.55),
+    0 28px 72px rgba(0,0,0,0.35);
+}
+.os-window:not(.focused) {
+  background: rgba(12, 12, 36, 0.68);
+}
+.os-window.dragging {
+  box-shadow:
+    0 0 0 1px rgba(99,102,241,0.30),
+    0 20px 60px rgba(0,0,0,0.60),
+    0 40px 80px rgba(0,0,0,0.35);
+  cursor: grabbing !important;
+  opacity: 0.92;
+}
+.os-window.resizing { cursor: se-resize !important; }
+
+/* ── Window enter / exit animations ──────────────────────── */
+.os-window.entering {
+  animation: win-enter 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes win-enter {
+  from { opacity:0; transform: scale(0.84) translateY(16px); filter: blur(6px); }
+  to   { opacity:1; transform: scale(1)    translateY(0);    filter: blur(0);   }
+}
+
+.os-window.closing {
+  animation: win-close 0.22s cubic-bezier(0,0,0.2,1) forwards;
+  pointer-events: none;
+}
+@keyframes win-close {
+  to { opacity:0; transform: scale(0.88) translateY(6px); filter: blur(4px); }
+}
+
+/* Minimize: fly toward dock using CSS custom props set by WM */
+.os-window.minimizing {
+  animation: win-minimize 0.30s cubic-bezier(0.4,0,1,1) forwards;
+  pointer-events: none;
+}
+@keyframes win-minimize {
+  to {
+    opacity: 0;
+    transform:
+      translate(var(--min-tx, 0px), var(--min-ty, 80px))
+      scale(0.15);
+    filter: blur(4px);
+  }
+}
+
+.os-window.maximized {
+  border-radius: 0 !important;
+  top: 0 !important; left: 0 !important;
+  width: 100% !important; height: 100% !important;
+}
+
+/* ── Title Bar ────────────────────────────────────────────── */
+.window-titlebar {
+  display: flex; align-items: center;
+  height: 42px; padding: 0 14px; gap: 10px;
+  background: rgba(255,255,255,0.055);
+  border-bottom: 1px solid rgba(255,255,255,0.09);
+  cursor: grab; user-select: none; flex-shrink: 0;
+  transition: background 150ms;
+}
+.window-titlebar:hover { background: rgba(255,255,255,0.075); }
+.window-titlebar:active { cursor: grabbing; }
+
+/* Traffic lights */
+.window-controls { display: flex; gap: 7px; flex-shrink: 0; }
+.wc-btn {
+  width: 14px; height: 14px; border-radius: 50%;
+  cursor: pointer; position: relative; flex-shrink: 0;
+  transition: transform 120ms, filter 120ms;
+  border: none;
+}
+.wc-btn:hover  { filter: brightness(1.15) saturate(1.2); transform: scale(1.15); }
+.wc-btn:active { transform: scale(0.88); }
+.wc-close  { background: #ff5f57; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.22); }
+.wc-min    { background: #febc2e; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18); }
+.wc-max    { background: #28c840; box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18); }
+.window-titlebar:hover .wc-close::after { content:'✕'; position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(0,0,0,0.6);font-weight:700; }
+.window-titlebar:hover .wc-min::after   { content:'−'; position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(0,0,0,0.55);font-weight:700; }
+.window-titlebar:hover .wc-max::after   { content:'⤢'; position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(0,0,0,0.55);font-weight:700; }
+
+.window-title {
+  flex:1; text-align:center; font-size:13px; font-weight:600;
+  color:rgba(255,255,255,0.88); letter-spacing:0.01em;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.window-spacer { width:55px; flex-shrink:0; }
+
+/* ── Window body ──────────────────────────────────────────── */
+.window-body {
+  flex:1; overflow:hidden;
+  display:flex; flex-direction:column; position:relative;
+  background: rgba(10,10,28,0.58);
+  color: rgba(255,255,255,0.92);
+}
+
+/* ── Resize handle ────────────────────────────────────────── */
+.window-resize-handle {
+  position:absolute; bottom:0; right:0;
+  width:22px; height:22px; cursor:se-resize;
+  opacity:0; transition:opacity 200ms;
+  background:
+    linear-gradient(135deg,
+      transparent 55%, rgba(255,255,255,0.22) 55%,
+      transparent 62%, rgba(255,255,255,0.22) 62%,
+      transparent 69%, rgba(255,255,255,0.22) 69%);
+}
+.os-window:hover .window-resize-handle { opacity:1; }
+
+/* ── Snap indicators ──────────────────────────────────────── */
+.snap-indicator {
+  position: absolute; top:0; bottom:0; width:50%;
+  background: rgba(99,102,241,0.14);
+  border: 2px solid rgba(99,102,241,0.45);
+  border-radius: 10px; pointer-events:none; z-index:999;
+  animation: snap-pulse 0.8s ease-in-out infinite alternate;
+  display:none;
+}
+.snap-indicator.snap-left  { left:0; }
+.snap-indicator.snap-right { right:0; left:auto; }
+@keyframes snap-pulse {
+  from { background: rgba(99,102,241,0.10); }
+  to   { background: rgba(99,102,241,0.22); }
+}
+
+/* ── App Switcher (gesture: swipe up) ─────────────────────── */
+#nova-app-switcher {
+  position: fixed; inset:0; z-index:9700;
+  display:flex; align-items:flex-end; justify-content:center;
+  padding-bottom: 90px;
+}
+.switcher-backdrop {
+  position:absolute; inset:0;
+  background: rgba(0,0,10,0.65);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  animation: swb-in 0.22s ease both;
+}
+@keyframes swb-in { from { opacity:0; } }
+.switcher-panel {
+  position:relative; z-index:1;
+  background: rgba(15,15,40,0.88);
+  backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:20px;
+  padding:16px 16px 12px;
+  width:min(420px, calc(100vw - 32px));
+  box-shadow: 0 20px 60px rgba(0,0,0,0.60);
+  animation: swp-in 0.28s cubic-bezier(0.34,1.4,0.64,1) both;
+}
+@keyframes swp-in {
+  from { opacity:0; transform:translateY(30px) scale(0.95); }
+}
+.switcher-title {
+  font-size:11px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.12em; color:rgba(255,255,255,0.40);
+  margin-bottom:12px; text-align:center;
+}
+.switcher-list { display:flex; flex-direction:column; gap:6px; max-height:260px; overflow-y:auto; }
+.switcher-item {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 14px; border-radius:12px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.09);
+  cursor:pointer; transition:background 120ms;
+}
+.switcher-item:hover { background:rgba(99,102,241,0.18); }
+.switcher-item-icon { font-size:22px; flex-shrink:0; }
+.switcher-item-name { flex:1; font-size:13px; font-weight:500; color:rgba(255,255,255,0.88); }
+.switcher-close {
+  width:26px; height:26px; border-radius:50%;
+  background:rgba(248,113,113,0.20); color:var(--nova-red);
+  font-size:12px; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:background 120ms; flex-shrink:0;
+  border:1px solid rgba(248,113,113,0.30);
+}
+.switcher-close:hover { background:rgba(248,113,113,0.38); }
+.switcher-hint {
+  font-size:10px; color:rgba(255,255,255,0.28);
+  text-align:center; margin-top:10px; font-family:var(--font-mono);
+}
+
+/* ── Desktop fade-in ──────────────────────────────────────── */
+#desktop.desktop-fadein {
+  animation: desktop-fade 0.55s ease both;
+}
+@keyframes desktop-fade {
+  from { opacity:0; transform:scale(1.015); }
+  to   { opacity:1; transform:scale(1); }
+}
+
+/* ── Boot status animation ────────────────────────────────── */
+.boot-status.status-change {
+  animation: status-flicker 0.18s ease both;
+}
+@keyframes status-flicker {
+  from { opacity:0.2; }
+  to   { opacity:1; }
+}
+
+/* ── Mobile full-screen windows ───────────────────────────── */
+@media (max-width: 600px) {
+  .os-window {
+    position:fixed !important;
+    top:40px !important; left:0 !important;
+    width:100% !important;
+    height:calc(100% - 40px - 80px) !important;
+    border-radius:0 !important; min-width:unset !important;
+  }
+  .window-resize-handle { display:none; }
+}

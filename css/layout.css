@@ -1,0 +1,451 @@
+/* ============================================================
+   Nova OS — layout.css  v4
+   Unified dark-space theme. Boot gradient → desktop gradient.
+   ============================================================ */
+
+/* ── Boot Screen ─────────────────────────────────────────── */
+#boot-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0f1a2e 100%);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+#boot-screen.fade-out { opacity: 0; transform: scale(1.06); pointer-events: none; }
+
+.boot-logo { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.boot-icon {
+  font-size: 64px; line-height: 1; color: #818cf8;
+  filter: drop-shadow(0 0 30px rgba(129,140,248,0.7));
+  animation: boot-pulse 2s ease-in-out infinite;
+}
+@keyframes boot-pulse {
+  0%,100% { transform: scale(1);    filter: drop-shadow(0 0 30px rgba(129,140,248,0.65)); }
+  50%      { transform: scale(0.94); filter: drop-shadow(0 0 52px rgba(129,140,248,0.95)); }
+}
+.boot-name {
+  font-family: var(--font-sans); font-size: 32px; font-weight: 300;
+  letter-spacing: 0.22em; color: #fff; text-transform: uppercase;
+}
+.boot-bar-wrap {
+  width: 200px; height: 2px; background: rgba(255,255,255,0.10);
+  border-radius: 99px; overflow: hidden;
+}
+.boot-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #6366f1, #818cf8, #a5b4fc);
+  border-radius: 99px; transition: width 0.35s var(--ease);
+  box-shadow: 0 0 10px rgba(99,102,241,0.80);
+}
+.boot-status {
+  font-size: 11px; color: rgba(255,255,255,0.38);
+  font-family: var(--font-mono); letter-spacing: 0.06em;
+}
+
+/* ── Desktop ─────────────────────────────────────────────── */
+#desktop {
+  position: fixed; inset: 0; overflow: hidden;
+  display: grid; grid-template-rows: 40px 1fr 80px;
+}
+
+/* Wallpaper matches boot gradient exactly */
+#wallpaper {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 85%,  rgba(99,102,241,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 15%,  rgba(139,92,246,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 70% at 50% 110%, rgba(59,130,246,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 60% 50%,  rgba(99,102,241,0.08) 0%, transparent 50%),
+    linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0f1a2e 100%);
+}
+
+/* Slow-breathing overlay — matches boot accent */
+#wallpaper::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(99,102,241,0.12) 0%, transparent 38%),
+    radial-gradient(circle at 78% 72%, rgba(139,92,246,0.10) 0%, transparent 38%);
+  animation: wp-breathe 18s ease-in-out infinite alternate;
+}
+@keyframes wp-breathe {
+  from { opacity: 0.6; transform: scale(1);    }
+  to   { opacity: 1.0; transform: scale(1.04); }
+}
+
+/* Depth overlay — very subtle, improves text contrast */
+#desktop::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: rgba(0,0,10, 0.08);
+  pointer-events: none;
+}
+
+/* ── Window layer ─────────────────────────────────────────── */
+#window-layer {
+  position: absolute; top: 40px; bottom: 80px; left: 0; right: 0;
+  z-index: 10; pointer-events: none;
+}
+#window-layer > * { pointer-events: all; }
+
+/* ── Top Bar ──────────────────────────────────────────────── */
+#topbar {
+  position: relative; z-index: 200; grid-row: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+  /* Glass tinted with boot bg */
+  background: rgba(15, 15, 30, 0.60);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.30);
+  height: 40px;
+}
+#topbar-left, #topbar-right {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 12px; color: var(--nova-text-2);
+}
+#tb-logo {
+  font-size: 14px; font-weight: 600;
+  color: var(--nova-text);
+  letter-spacing: 0.02em;
+  display: flex; align-items: center; gap: 6px;
+}
+#topbar-center { position: absolute; left: 50%; transform: translateX(-50%); }
+#tb-clock {
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  color: var(--nova-text); letter-spacing: 0.02em;
+}
+#tb-date { font-size: 11px; color: var(--nova-text-2); }
+#tb-ram-indicator {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--nova-accent-3);
+  background: rgba(99,102,241,0.15);
+  padding: 2px 7px; border-radius: 99px;
+  border: 1px solid rgba(99,102,241,0.25);
+}
+.tb-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 6px; font-size: 16px;
+  cursor: pointer; transition: background var(--dur-fast); color: var(--nova-text-2);
+}
+.tb-btn:hover {
+  background: rgba(255,255,255,0.10); color: var(--nova-text);
+}
+
+/* ── Desktop Icons ────────────────────────────────────────── */
+#desktop-icons {
+  position: absolute; top: 56px; left: 20px;
+  z-index: 2; display: grid;
+  grid-template-columns: repeat(2, 76px);
+  gap: 6px; pointer-events: all;
+}
+.desktop-icon {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 10px 6px; border-radius: 14px;
+  cursor: pointer; transition: all var(--dur) var(--ease-spring);
+}
+.desktop-icon:hover {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.12);
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.30);
+}
+.desktop-icon:active { transform: scale(0.94); }
+.di-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  /* Dark-tinted glass — matches topbar */
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  box-shadow: var(--nova-shadow-sm), var(--nova-inset);
+  transition: all var(--dur);
+}
+.desktop-icon:hover .di-icon {
+  background: rgba(255,255,255,0.16);
+  box-shadow: var(--nova-shadow), var(--nova-inset-strong);
+}
+.di-label {
+  font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.90);
+  text-align: center;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.80);
+  letter-spacing: 0.01em; line-height: 1.2;
+}
+
+/* ── Desktop Widgets ──────────────────────────────────────── */
+#desktop-widgets {
+  position: absolute; top: 56px; right: 20px;
+  z-index: 2; display: flex; flex-direction: column;
+  gap: 10px; pointer-events: none; width: 196px;
+}
+/* All widgets share the same dark-glass recipe */
+.desktop-widget {
+  background: rgba(15, 15, 35, 0.58);
+  backdrop-filter: blur(28px) saturate(1.5);
+  -webkit-backdrop-filter: blur(28px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-xl);
+  padding: 14px 16px;
+  box-shadow: var(--nova-shadow), var(--nova-inset);
+}
+
+/* Clock widget */
+.widget-clock { text-align: center; }
+.dw-time {
+  font-family: var(--font-sans); font-size: 34px; font-weight: 200;
+  color: var(--nova-text); letter-spacing: -1px; line-height: 1;
+}
+.dw-date { font-size: 11px; color: var(--nova-text-2); margin-top: 5px; line-height: 1.4; }
+.dw-tz   { font-size: 10px; color: var(--nova-text-3); font-family: var(--font-mono); margin-top: 3px; }
+
+/* System widget */
+.widget-system { display: flex; flex-direction: column; gap: 8px; }
+.dw-sys-row { display: flex; align-items: center; gap: 8px; }
+.dw-sys-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--nova-text-3); width: 26px; flex-shrink: 0;
+}
+.dw-bar-track {
+  flex: 1; height: 4px; background: rgba(255,255,255,0.10);
+  border-radius: 99px; overflow: hidden;
+}
+.dw-bar-fill {
+  height: 100%; width: 0%; background: var(--nova-accent-2);
+  border-radius: 99px; transition: width 1s var(--ease);
+}
+.dw-bar-fill.ram  { background: var(--nova-blue); }
+.dw-bar-fill.gpu  { background: var(--nova-green); }
+.dw-sys-val {
+  font-size: 10px; font-family: var(--font-mono);
+  color: var(--nova-text-2); width: 28px; text-align: right; flex-shrink: 0;
+}
+
+/* ── Dock ─────────────────────────────────────────────────── */
+#dock {
+  position: relative; z-index: 200; grid-row: 3;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 10px;
+}
+#dock-inner {
+  display: flex; align-items: flex-end; gap: 5px;
+  padding: 8px 14px;
+  /* Same dark-glass as topbar */
+  background: rgba(15, 15, 35, 0.65);
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 22px;
+  box-shadow: var(--nova-shadow-lg), var(--nova-inset);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto; overflow-y: visible; scrollbar-width: none;
+}
+#dock-inner::-webkit-scrollbar { display: none; }
+
+.dock-app {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; cursor: pointer; position: relative; flex-shrink: 0;
+  transition: transform var(--dur) var(--ease-spring);
+}
+.dock-app:hover { transform: translateY(-12px) scale(1.22); }
+.dock-app:hover + .dock-app { transform: translateY(-6px) scale(1.10); }
+
+.dock-icon {
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  /* Dark glass icon — same family as di-icon */
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  box-shadow: var(--nova-shadow-sm), var(--nova-inset);
+  transition: all var(--dur);
+}
+.dock-app:hover .dock-icon {
+  background: rgba(255,255,255,0.18);
+  box-shadow: var(--nova-shadow), 0 0 16px rgba(99,102,241,0.30), var(--nova-inset-strong);
+}
+
+/* Tooltip */
+.dock-app > span {
+  position: absolute; top: -30px; left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(10,10,30,0.92);
+  backdrop-filter: blur(10px);
+  color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 3px 10px; border-radius: 99px;
+  font-size: 11px; font-weight: 500;
+  white-space: nowrap; opacity: 0; pointer-events: none;
+  transition: opacity var(--dur), transform var(--dur);
+}
+.dock-app:hover > span {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+}
+
+/* Running dot */
+.dock-app.running::after {
+  content: ''; display: block; width: 4px; height: 4px;
+  background: var(--nova-accent-2); border-radius: 50%; margin: 1px auto 0;
+  box-shadow: 0 0 6px var(--nova-accent);
+}
+
+.dock-sep {
+  width: 1px; height: 36px;
+  background: rgba(255,255,255,0.12);
+  margin: 0 3px; align-self: center; flex-shrink: 0;
+}
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  #topbar  { padding: 0 12px; }
+  #dock-inner { gap: 3px; padding: 6px 8px; }
+  .dock-icon  { width: 40px; height: 40px; font-size: 22px; border-radius: 10px; }
+  .dock-app:hover { transform: translateY(-8px) scale(1.14); }
+  #desktop-icons { grid-template-columns: repeat(2, 68px); left: 10px; gap: 4px; }
+  .di-icon { width: 46px; height: 46px; font-size: 22px; border-radius: 12px; }
+  #desktop-widgets { display: none; }
+  #window-layer { top: 40px; }
+}
+
+/* ============================================================
+   Nova OS — Compact Mode
+   Activated when window.innerHeight < 500px (landscape phones).
+   ONLY adjusts sizes. Does NOT change desktop layout or design.
+   ============================================================ */
+
+/* ── Grid rows: topbar 32px, dock 60px ───────────────────── */
+body.compact-mode #desktop {
+  grid-template-rows: 32px 1fr 60px;
+}
+
+/* ── Topbar ───────────────────────────────────────────────── */
+body.compact-mode #topbar {
+  height: 32px;
+  padding: 0 12px;
+}
+body.compact-mode #tb-clock  { font-size: 12px; }
+body.compact-mode #tb-date   { font-size: 10px; }
+body.compact-mode .tb-btn    { width: 22px; height: 22px; font-size: 13px; }
+body.compact-mode #tb-ram-indicator { font-size: 9px; padding: 1px 5px; }
+
+/* ── Window layer offset matches new topbar/dock heights ──── */
+body.compact-mode #window-layer {
+  top: 32px;
+  bottom: 60px;
+}
+
+/* ── Dock ─────────────────────────────────────────────────── */
+body.compact-mode #dock {
+  padding-bottom: 6px;
+}
+body.compact-mode #dock-inner {
+  padding: 5px 10px;
+  gap: 3px;
+  border-radius: 16px;
+}
+body.compact-mode .dock-icon {
+  width: 36px;
+  height: 36px;
+  font-size: 19px;
+  border-radius: 9px;
+}
+body.compact-mode .dock-app:hover {
+  transform: translateY(-6px) scale(1.12);
+}
+body.compact-mode .dock-sep {
+  height: 26px;
+}
+
+/* ── Desktop icons ────────────────────────────────────────── */
+body.compact-mode #desktop-icons {
+  top: 40px;
+  gap: 3px;
+  grid-template-columns: repeat(2, 64px);
+}
+body.compact-mode .desktop-icon {
+  padding: 6px 4px;
+  border-radius: 10px;
+}
+body.compact-mode .di-icon {
+  width: 40px;
+  height: 40px;
+  font-size: 21px;
+  border-radius: 10px;
+}
+body.compact-mode .di-label {
+  font-size: 10px;
+}
+
+/* ── Desktop widgets: hide in compact (too tall) ──────────── */
+body.compact-mode #desktop-widgets {
+  display: none;
+}
+
+/* ── Windows ──────────────────────────────────────────────── */
+body.compact-mode .os-window {
+  max-height: 90vh;
+}
+body.compact-mode .window-body {
+  overflow-y: auto !important;
+}
+body.compact-mode .window-titlebar {
+  height: 34px;
+  padding: 0 10px;
+}
+body.compact-mode .wc-btn {
+  width: 12px;
+  height: 12px;
+}
+body.compact-mode .window-title {
+  font-size: 12px;
+}
+
+/* ── Reduce blur for perf (landscape is often mid-range hw) ─ */
+body.compact-mode #topbar,
+body.compact-mode #dock-inner,
+body.compact-mode .desktop-widget {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+body.compact-mode .os-window {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── App internals: enable scroll, tighten padding ─────────── */
+body.compact-mode .window-body > * {
+  min-height: 0;
+}
+body.compact-mode .settings-main,
+body.compact-mode .notes-list,
+body.compact-mode .files-grid,
+body.compact-mode .security-body,
+body.compact-mode .weather-app,
+body.compact-mode .taskman-procs,
+body.compact-mode .playstore-app {
+  overflow-y: auto;
+}
+
+/* ── Boot screen: tighter in compact ────────────────────────  */
+body.compact-mode .boot-logo {
+  gap: 12px;
+}
+body.compact-mode .boot-icon {
+  font-size: 44px;
+}
+body.compact-mode .boot-name {
+  font-size: 22px;
+}
+
+/* ── Lock screen: tighter in compact ────────────────────────  */
+body.compact-mode .ls-time {
+  font-size: 48px;
+}
+body.compact-mode .ls-clock-wrap {
+  margin-bottom: 24px;
+}
+body.compact-mode .ls-panel {
+  padding: 20px 28px;
+  gap: 10px;
+}

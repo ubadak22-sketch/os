@@ -1,0 +1,288 @@
+/* ============================================================
+   Nova OS — base.css  v4
+   Unified dark-space theme matching boot screen.
+   Deep: #0f0f1a → #1a1a3e  Accent: #6366f1 / #818cf8
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Boot-matched core palette ────────────────────────── */
+  --nova-bg:           #0f0f1a;        /* exact boot bg start  */
+  --nova-bg-2:         #1a1a3e;        /* exact boot bg mid    */
+  --nova-bg-3:         #0f1a2e;        /* exact boot bg end    */
+
+  /* Glass surfaces — white-tinted for readability on dark bg */
+  --nova-surface:      rgba(255,255,255,0.10);
+  --nova-surface-2:    rgba(255,255,255,0.06);
+  --nova-surface-3:    rgba(255,255,255,0.04);
+
+  /* Glass borders */
+  --nova-border:       rgba(255,255,255,0.14);
+  --nova-border-2:     rgba(255,255,255,0.08);
+  --nova-border-3:     rgba(255,255,255,0.05);
+
+  /* Inset highlight */
+  --nova-inset:        0 0 0 1px rgba(255,255,255,0.12) inset;
+  --nova-inset-strong: 0 0 0 1px rgba(255,255,255,0.20) inset;
+
+  /* ── Shadows (darker bg = deeper shadows) ────────────── */
+  --nova-shadow-sm:    0 2px 8px rgba(0,0,0,0.30);
+  --nova-shadow:       0 8px 32px rgba(0,0,0,0.40), 0 2px 8px rgba(0,0,0,0.20);
+  --nova-shadow-lg:    0 20px 60px rgba(0,0,0,0.50), 0 4px 16px rgba(0,0,0,0.25);
+  --nova-shadow-xl:    0 32px 80px rgba(0,0,0,0.60), 0 8px 24px rgba(0,0,0,0.30);
+
+  /* ── Text — light on dark ────────────────────────────── */
+  --nova-text:         rgba(255,255,255,0.95);
+  --nova-text-2:       rgba(255,255,255,0.65);
+  --nova-text-3:       rgba(255,255,255,0.38);
+  --nova-text-inv:     #0f0f1a;
+
+  /* ── Accent — boot bar colours ───────────────────────── */
+  --nova-accent:       #6366f1;
+  --nova-accent-2:     #818cf8;
+  --nova-accent-3:     #a5b4fc;
+  --nova-accent-deep:  #4f46e5;
+  --nova-accent-bg:    rgba(99,102,241,0.18);
+  --nova-accent-glow:  0 0 24px rgba(99,102,241,0.55);
+
+  /* ── Semantic ────────────────────────────────────────── */
+  --nova-red:          #f87171;
+  --nova-yellow:       #fbbf24;
+  --nova-green:        #34d399;
+  --nova-blue:         #60a5fa;
+  --nova-purple:       #c084fc;
+  --nova-pink:         #f472b6;
+
+  /* ── Backward-compat aliases (apps use --luna-*) ─────── */
+  --luna-bg:           var(--nova-bg);
+  --luna-surface:      rgba(255,255,255,0.10);
+  --luna-surface-2:    rgba(255,255,255,0.07);
+  --luna-border:       rgba(255,255,255,0.12);
+  --luna-border-2:     rgba(255,255,255,0.08);
+  --luna-shadow-sm:    var(--nova-shadow-sm);
+  --luna-shadow:       var(--nova-shadow);
+  --luna-shadow-lg:    var(--nova-shadow-lg);
+  --luna-text:         var(--nova-text);
+  --luna-text-2:       var(--nova-text-2);
+  --luna-text-3:       var(--nova-text-3);
+  --luna-accent:       var(--nova-accent);
+  --luna-accent-2:     var(--nova-accent-2);
+  --luna-accent-bg:    var(--nova-accent-bg);
+  --luna-blue:         var(--nova-blue);
+  --luna-green:        var(--nova-green);
+  --luna-red:          var(--nova-red);
+
+  /* ── Typography ───────────────────────────────────────── */
+  --font-sans:         'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:         'JetBrains Mono', 'Courier New', monospace;
+  --font-serif:        'Inter', system-ui, sans-serif;
+
+  /* ── Radius ───────────────────────────────────────────── */
+  --radius-sm:  6px;
+  --radius:    10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl:28px;
+
+  /* ── Motion ───────────────────────────────────────────── */
+  --ease:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:    cubic-bezier(0.0,  0.0,  0.2,  1);
+  --dur-fast:    100ms;
+  --dur:         200ms;
+  --dur-slow:    360ms;
+}
+
+/* ── Reset ────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  font-family: var(--font-sans); font-size: 14px;
+  color: var(--nova-text);
+  /* Boot-matched background fills the page body */
+  background: linear-gradient(135deg, #0f0f1a 0%, #1a1a3e 50%, #0f1a2e 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* Allow text selection inside app windows */
+.window-body { user-select: text; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; font-size: inherit; }
+.hidden { display: none !important; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all var(--dur-fast) var(--ease);
+  border: 1px solid transparent; white-space: nowrap;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary {
+  background: var(--nova-accent); color: #fff;
+  border-color: var(--nova-accent-deep);
+  box-shadow: 0 2px 12px rgba(99,102,241,0.40);
+}
+.btn-primary:hover {
+  background: var(--nova-accent-deep);
+  box-shadow: var(--nova-accent-glow);
+}
+.btn-ghost {
+  background: rgba(255,255,255,0.08);
+  color: var(--nova-text);
+  border-color: var(--nova-border);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.13); }
+.btn-danger {
+  background: rgba(248,113,113,0.12);
+  color: var(--nova-red);
+  border-color: rgba(248,113,113,0.25);
+}
+.btn-danger:hover { background: rgba(248,113,113,0.20); }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-icon {
+  width: 30px; height: 30px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--nova-border);
+  font-size: 14px;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.13); }
+
+/* ── Input ────────────────────────────────────────────────── */
+.input {
+  width: 100%; padding: 8px 12px;
+  border: 1px solid var(--nova-border);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.07);
+  color: var(--nova-text);
+  font-size: 13px; outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.input:focus {
+  border-color: var(--nova-accent);
+  box-shadow: 0 0 0 3px var(--nova-accent-bg);
+}
+.input::placeholder { color: var(--nova-text-3); }
+textarea.input { resize: vertical; min-height: 80px; }
+
+/* ── Scrollbars ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18); border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.30); }
+
+/* ── Panel / Card ─────────────────────────────────────────── */
+.panel {
+  background: var(--nova-surface);
+  border: 1px solid var(--nova-border);
+  border-radius: var(--radius);
+  padding: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── Toolbar ──────────────────────────────────────────────── */
+.toolbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--nova-border-2);
+  background: rgba(255,255,255,0.04);
+  flex-shrink: 0;
+}
+.toolbar-sep { width: 1px; height: 20px; background: var(--nova-border); margin: 0 2px; }
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 10px; padding: 40px;
+  color: var(--nova-text-3); text-align: center; flex: 1;
+}
+.empty-state .es-icon  { font-size: 40px; }
+.empty-state .es-title { font-size: 15px; font-weight: 500; color: var(--nova-text-2); }
+.empty-state .es-desc  { font-size: 12px; max-width: 220px; line-height: 1.6; }
+
+/* ── Form ─────────────────────────────────────────────────── */
+.form-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.form-label {
+  font-size: 11px; font-weight: 600; color: var(--nova-text-2);
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+
+/* ── Toggle ───────────────────────────────────────────────── */
+.toggle {
+  position: relative; width: 40px; height: 22px;
+  background: rgba(255,255,255,0.15); border-radius: 99px;
+  cursor: pointer; transition: background var(--dur);
+}
+.toggle.on { background: var(--nova-accent); }
+.toggle::after {
+  content: ''; position: absolute;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; top: 3px; left: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  transition: transform var(--dur) var(--ease-spring);
+}
+.toggle.on::after { transform: translateX(18px); }
+
+/* ── Notifications ────────────────────────────────────────── */
+#notification-area {
+  position: fixed; top: 50px; right: 16px;
+  z-index: 9500; display: flex; flex-direction: column;
+  gap: 8px; pointer-events: none;
+}
+.notification {
+  background: rgba(20, 20, 50, 0.82);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--nova-shadow-lg), var(--nova-inset);
+  padding: 12px 16px; min-width: 240px; max-width: 320px;
+  pointer-events: all;
+  animation: notif-in 0.30s var(--ease-spring);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+@keyframes notif-in {
+  from { opacity: 0; transform: translateX(30px) scale(0.90); }
+}
+.notif-icon { font-size: 18px; flex-shrink: 0; }
+.notif-body { flex: 1; }
+.notif-title { font-weight: 600; font-size: 13px; color: var(--nova-text); }
+.notif-msg   { font-size: 12px; color: var(--nova-text-2); margin-top: 2px; line-height: 1.4; }
+
+/* ── Context menu ─────────────────────────────────────────── */
+.context-menu {
+  position: fixed;
+  background: rgba(18, 18, 42, 0.88);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--nova-shadow-lg), var(--nova-inset);
+  padding: 5px; min-width: 188px; z-index: 9000;
+  animation: ctx-in 0.14s var(--ease-spring);
+}
+@keyframes ctx-in { from { opacity: 0; transform: scale(0.90); } }
+.context-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  font-size: 13px; cursor: pointer; color: var(--nova-text);
+  transition: background var(--dur-fast);
+}
+.context-item:hover { background: var(--nova-accent-bg); color: var(--nova-accent-3); }
+.context-item.danger { color: var(--nova-red); }
+.context-item.danger:hover { background: rgba(248,113,113,0.12); }
+.context-sep { height: 1px; background: var(--nova-border-2); margin: 4px 0; }
